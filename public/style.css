@@ -1,0 +1,359 @@
+/* ================= Base Layout ================= */
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+/* ================= Calculator Card ================= */
+.calculator {
+  background: #1e293b;
+  padding: 1.75rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  width: 1000px;
+  max-width: 95%;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ================= Header ================= */
+.calc-header,
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.calc-header h2,
+.topbar h2 {
+  margin: 0;
+  color: #3b82f6;
+  letter-spacing: 0.5px;
+}
+
+.topbar a {
+  color: #93c5fd;
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar a:hover {
+  text-decoration: underline;
+}
+
+
+/* ================= Icon Buttons ================= */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #94a3b8;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.icon-btn:hover {
+  color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25);
+  transform: translateY(-1px);
+}
+.icon-btn:active {
+  transform: scale(0.97);
+}
+
+/* ================= Fieldsets ================= */
+fieldset {
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem 1rem;
+  background: rgba(15, 23, 42, 0.6);
+}
+legend {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #94a3b8;
+  padding: 0 0.5rem;
+}
+
+/* ================= Labels & Inputs ================= */
+label {
+  display: block;
+  margin-top: 0.6rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+select,
+input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #334155;
+  border-radius: 0.4rem;
+  font-size: 0.95rem;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+select:focus,
+input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+}
+
+.inline-fields,
+.inline-fields-3 {
+  display: grid;
+  gap: 0.8rem;
+}
+.inline-fields { grid-template-columns: repeat(2, 1fr); }
+.inline-fields-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ================= Buttons ================= */
+button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 0.6rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.5);
+}
+button:active {
+  transform: scale(0.97);
+}
+
+/* ================= Results ================= */
+.result {
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.result h3 {
+  margin-top: 0;
+  color: #38bdf8;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+.result .advance { color: #3b82f6; font-weight: bold; }
+.result .earned  { color: #22c55e; font-weight: bold; }
+.result .monthly { color: #facc15; font-weight: bold; }
+
+/* ================= Settings Page Cards ================= */
+.settings-card {
+  background: #fff;
+  border: 3px solid #3b82f6;
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.settings-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25);
+}
+.settings-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  color: #1e3a8a;
+  background: linear-gradient(90deg, #bfdbfe, #93c5fd);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+/* Step number badge */
+.settings-card::before {
+  counter-increment: step;
+  content: counter(step);
+  counter-reset: none;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  width: 36px;
+  height: 36px;
+  background: #3b82f6;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+/* Instruction text */
+.settings-card .help {
+  font-size: 1.05rem;
+  color: #111827;
+  line-height: 1.6;
+}
+.settings-card ol li {
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  background: #f0f9ff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* Code snippets */
+.settings-card code {
+  background: #e0e7ff;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-family: monospace;
+  color: #1e40af;
+  font-weight: bold;
+}
+
+/* Links */
+.settings-card a {
+  color: #2563eb;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+.settings-card a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* ================= Layout Helpers ================= */
+.form-sections {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.form-sections fieldset {
+  flex: 1;
+  min-width: 280px;
+}
+.loading {
+  margin-top: 0.75rem;
+  color: #3b82f6; /* blue text */
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loading::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid #93c5fd;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.back-to-calc {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px solid #22c55e;
+  background: #ecfdf5;
+  border-radius: 8px;
+  color: #065f46;
+  font-weight: 600;
+  text-align: center;
+}
+.back-to-calc a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.back-to-calc a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(34,197,94,0.4);
+}
+/* style.css */
+button.loading {
+  position: relative;
+  pointer-events: none;
+}
+button.loading::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ================= Animations ================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= Step Counter Init ================= */
+body {
+  counter-reset: step;
+}
+.notice {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 2px solid #22c55e;
+  background: #ecfdf5;
+  border-radius: 8px;
+  color: #065f46;
+  font-weight: 600;
+  display: none;
+}
+
+.error {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 2px solid #f87171;
+  background: #fef2f2;
+  border-radius: 8px;
+  color: #991b1b;
+  font-weight: 600;
+  display: none;
+}

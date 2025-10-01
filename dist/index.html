@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>1099 Exact Commission Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Icons are provided using simple emoji characters.  Using emojis avoids
+       dependencies on external icon libraries that may not be available
+       when the calculator is viewed offline. -->
+
+  <!-- Favicons (optional) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <link rel="manifest" href="images/site.webmanifest" />
+</head>
+<body>
+  <div class="calculator">
+    <div class="calc-header">
+      <h2>1099 Exact Commission Calculator</h2>
+      <div class="icon-bar">
+        <!-- Settings -->
+        <a href="settings.html" id="settingsBtn" class="icon-btn" aria-label="Settings" title="Settings">
+          <!-- Settings icon (emoji) -->
+          ⚙️
+        </a>
+
+        <!-- My Clients -->
+        <a href="myList.html" id="clientsBtn" class="icon-btn" aria-label="My Clients" title="My Clients">
+          <!-- Clients icon (emoji) -->
+          👥
+        </a>
+      </div>
+    </div>
+
+    <!-- === Side-by-Side Sections === -->
+    <div class="form-sections">
+      <!-- --- Client / Policy Info --- -->
+      <fieldset>
+        <legend>Client Information</legend>
+
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Client full name" />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="(555) 555-5555" />
+
+        <label for="mbi">MBI</label>
+        <input type="text" id="mbi" placeholder="Medicare Beneficiary ID" />
+
+        <label for="dateSubmitted">Date Submitted</label>
+        <input type="date" id="dateSubmitted" />
+
+        <label for="effective">Effective Date</label>
+        <input type="date" id="effective" />
+      </fieldset>
+
+      <!-- --- Plan Selection --- -->
+      <fieldset>
+        <legend>Plan Information</legend>
+
+        <label for="plan">Plan Type</label>
+        <select id="plan">
+          <optgroup label="MA/MAPD">
+            <option value="maMapd">MA/MAPD</option>
+          </optgroup>
+          <optgroup label="Ancillary – Hospital Indemnity">
+            <option value="heartlandHIP">Heartland HIP</option>
+            <option value="uhoneHIP">UHOne HIP</option>
+          </optgroup>
+          <optgroup label="Ancillary – Critical Illness & Home Health">
+            <option value="heartlandCHAS">Heartland CHAS</option>
+            <option value="heartlandSTHHC">Heartland Short-Term HHC</option>
+            <option value="uhoneCritical">UHOne Critical Illness / Life SafeGuard</option>
+          </optgroup>
+          <optgroup label="Ancillary – Dental">
+            <option value="uhoneDental">UHOne Dental</option>
+          </optgroup>
+          <optgroup label="Ancillary – Vision">
+            <option value="uhoneVision">UHOne Vision</option>
+          </optgroup>
+          <optgroup label="Life Products">
+            <option value="amAmicable">American Amicable</option>
+            <option value="libertyBankers">Liberty Bankers</option>
+            <option value="citizens">Citizens (CICA)</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option value="medSupp">MedSupp</option>
+            <option value="annuity">Annuity</option>
+          </optgroup>
+        </select>
+
+        <label for="product">Product</label>
+        <select id="product" disabled>
+          <option value="">Not required</option>
+        </select>
+
+        <label for="state">State</label>
+        <select id="state">
+          <option value="">-- Select State --</option>
+          <option value="AL">AL</option><option value="AK">AK</option>
+          <option value="AZ">AZ</option><option value="AR">AR</option>
+          <option value="CA">CA</option><option value="CO">CO</option>
+          <option value="CT">CT</option><option value="DE">DE</option>
+          <option value="FL">FL</option><option value="GA">GA</option>
+          <option value="HI">HI</option><option value="ID">ID</option>
+          <option value="IL">IL</option><option value="IN">IN</option>
+          <option value="IA">IA</option><option value="KS">KS</option>
+          <option value="KY">KY</option><option value="LA">LA</option>
+          <option value="ME">ME</option><option value="MD">MD</option>
+          <option value="MA">MA</option><option value="MI">MI</option>
+          <option value="MN">MN</option><option value="MS">MS</option>
+          <option value="MO">MO</option><option value="MT">MT</option>
+          <option value="NE">NE</option><option value="NV">NV</option>
+          <option value="NH">NH</option><option value="NJ">NJ</option>
+          <option value="NM">NM</option><option value="NY">NY</option>
+          <option value="NC">NC</option><option value="ND">ND</option>
+          <option value="OH">OH</option><option value="OK">OK</option>
+          <option value="OR">OR</option><option value="PA">PA</option>
+          <option value="RI">RI</option><option value="SC">SC</option>
+          <option value="SD">SD</option><option value="TN">TN</option>
+          <option value="TX">TX</option><option value="UT">UT</option>
+          <option value="VT">VT</option><option value="VA">VA</option>
+          <option value="WA">WA</option><option value="WV">WV</option>
+          <option value="WI">WI</option><option value="WY">WY</option>
+          <option value="DC">DC</option>
+        </select>
+
+        <label for="age">Age</label>
+        <input type="number" id="age" min="0" step="1" />
+
+        <!-- Premiums -->
+        <label for="premium">Monthly Premium</label>
+        <input type="number" id="premium" min="0" step="0.01" placeholder="e.g. 75" />
+
+        <label for="annualPremium">Annual Premium</label>
+        <input type="number" id="annualPremium" min="0" step="0.01" placeholder="e.g. 900" />
+
+        <label>
+          <input type="checkbox" id="isAEP" /> Apply AEP Rules (Oct 15 – Dec 7)
+        </label>
+      </fieldset>
+
+      <!-- --- Performance Metrics (Read-Only) --- -->
+      <fieldset>
+        <legend>Performance Metrics</legend>
+        <p><b>Total Apps:</b> <span id="mTotalApps">–</span></p>
+        <p><b>Ancillary Attach %:</b> <span id="mAttach">–</span></p>
+        <p><b>Closing Rate %:</b> <span id="mClosing">–</span></p>
+        <p><b>Placement Rate %:</b> <span id="mPlacement">–</span></p>
+        <p><b>Compliance %:</b> <span id="mCompliance">–</span></p>
+      </fieldset>
+    </div>
+
+    <!-- Actions -->
+    <button id="calculate">Calculate</button>
+    <button id="send" style="display:none;">Send to Google Sheet</button>
+    <button id="clear" style="display:none;">Clear</button>
+	
+    <!-- Results (always visible placeholder) -->
+<div id="resultBoxWrapper">
+  <h3>Calculation Results</h3>
+  <div class="result" id="result">No calculation yet.</div>
+</div>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="app-config.js"></script>
+  <script src="script.js"></script>
+  
+  <!-- RERUN SUPPORT -->
+  <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const rerunData = localStorage.getItem("rerunClient");
+    if (rerunData) {
+      const client = JSON.parse(rerunData);
+
+      // Fill fields with client info
+      document.getElementById("fullName").value = client["Full Name "] || "";
+      document.getElementById("phone").value = client["Phone Number"] || "";
+      document.getElementById("mbi").value = client["MBI"] || "";
+      document.getElementById("plan").value = client["Plan Type"] || "";
+      document.getElementById("state").value = client["State"] || "";
+      document.getElementById("age").value = client["Age"] || "";
+      
+      // Fill premiums
+      if (client["Annual Premium"]) {
+        document.getElementById("annualPremium").value = client["Annual Premium"];
+        document.getElementById("premium").value = (client["Annual Premium"] / 12).toFixed(2);
+      } else if (client["Premium Month"]) {
+        document.getElementById("premium").value = client["Premium Month"];
+        document.getElementById("annualPremium").value = (client["Premium Month"] * 12).toFixed(2);
+      }
+
+      // Clear it so it doesn’t rerun again on refresh
+      localStorage.removeItem("rerunClient");
+
+      // Automatically run calculation
+      document.getElementById("calculate").click();
+    }
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client Payout List</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #2c3e50;
+      color: white;
+      padding: 12px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .header h2 { margin: 0; font-size: 20px; }
+    .back-btn {
+      background: #007bff;
+      border: none;
+      color: white;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: #0056b3; }
+    .container { padding: 20px; }
+    select {
+      padding: 6px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #34495e;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    tr:hover { background: #f1f9ff; }
+    tr:nth-child(even) { background: #fafafa; }
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .rerun { background: #28a745; color: #fff; }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h2>📋 My Client Payouts</h2>
+    <button class="back-btn" onclick="window.location.href='index.html'">⬅ Back to Calculator</button>
+  </div>
+
+  <div class="container">
+    <!-- Month Selector -->
+    <label for="sheetSelect"><b>Month:</b></label>
+    <select id="sheetSelect"></select>
+
+    <table id="clientsTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>MBI</th>
+          <th>Plan</th>
+          <th>Premium</th>
+          <th>Advance</th>
+          <th>Earned</th>
+          <th>Commission (Owed)</th>
+          <th>What I Got Paid</th>
+          <th>Difference</th>
+          <th>Pay Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="clientsBody">
+        <tr><td colspan="12">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let currentSheet = "";
+
+    // Load available sheets into dropdown
+    async function loadSheets() {
+      try {
+        const res = await fetch("/sheets");
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.error);
+
+        const select = document.getElementById("sheetSelect");
+        select.innerHTML = "";
+
+        json.sheets.forEach(name => {
+          const opt = document.createElement("option");
+          opt.value = name;
+          opt.textContent = name;
+          select.appendChild(opt);
+        });
+
+        // Default to the last sheet
+        currentSheet = json.sheets[json.sheets.length - 1];
+        select.value = currentSheet;
+        await loadClients();
+      } catch (err) {
+        console.error("Sheets load error:", err);
+        alert("❌ Failed to load sheet list");
+      }
+    }
+
+    // Load clients for selected sheet
+    async function loadClients() {
+      try {
+        const res = await fetch(`/records?sheet=${encodeURIComponent(currentSheet)}`);
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.error);
+
+        const body = document.getElementById("clientsBody");
+        body.innerHTML = "";
+
+        json.data.forEach(client => {
+          const owed = Number(client["Total Commission"] || 0);
+          const advance = Number(client["Advance:"] || 0);
+          const paid = Number(client["WHAT I GOT PAID"] || 0);
+          const diff = paid - advance;
+          const status = client["Pay Dropdown"] || "not paid yet";
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${client["Full Name"] || ""}</td>
+            <td>${client["Phone Number"] || ""}</td>
+            <td>${client["MBI"] || ""}</td>
+            <td>${client["Plan Type"] || ""}</td>
+            <td>$${Number(client["Premium Month"] || 0).toFixed(2)}</td>
+            <td>$${advance.toFixed(2)}</td>
+            <td>$${Number(client["Earned:"] || 0).toFixed(2)}</td>
+            <td><b>$${owed.toFixed(2)}</b></td>
+
+            <td>
+              <input type="number" step="0.01" value="${paid || ""}"
+                     data-name="${client["Full Name"]}"
+                     data-phone="${client["Phone Number"]}"
+                     class="paid-input" style="width:100px">
+            </td>
+
+            <td class="diff-cell" style="color:${diff === 0 ? "green" : (diff > 0 ? "blue" : "red")}">
+              ${diff.toFixed(2)}
+            </td>
+
+            <td class="status-cell" style="font-weight:bold; color:${
+              status === "paid in full" ? "green" :
+              status === "paid correct advance" ? "blue" :
+              status === "incorrect pay" ? "red" : "gray"
+            }">${status}</td>
+
+            <td><button class="rerun" onclick='rerunCalc(${JSON.stringify(client)})'>🔄 Rerun</button></td>
+          `;
+          body.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Load error:", err);
+        document.getElementById("clientsBody").innerHTML =
+          `<tr><td colspan="12">❌ Failed to load clients</td></tr>`;
+      }
+    }
+
+    // Handle input changes
+    document.addEventListener("change", async (e) => {
+      if (e.target.classList.contains("paid-input")) {
+        const input = e.target;
+        const name = input.dataset.name.trim();
+        const phone = input.dataset.phone.trim();
+        const newValue = parseFloat(input.value) || 0;
+
+        try {
+          const res = await fetch("/updatePaid", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheet: currentSheet,  // 👈 include sheet in request
+              fullName: name,
+              phone: phone,
+              value: newValue
+            })
+          });
+          const json = await res.json();
+          if (!json.ok) throw new Error(json.error);
+
+          // Update Difference + Status
+          const row = input.closest("tr");
+          const advanceCell = row.children[5];
+          const diffCell = row.querySelector(".diff-cell");
+          const statusCell = row.querySelector(".status-cell");
+          const advance = parseFloat(advanceCell.innerText.replace(/[^0-9.-]/g, "")) || 0;
+          const diff = newValue - advance;
+
+          diffCell.innerText = diff.toFixed(2);
+          diffCell.style.color = diff === 0 ? "green" : (diff > 0 ? "blue" : "red");
+
+          const status = json.updated.status;
+          statusCell.innerText = status;
+          statusCell.style.color =
+            status === "paid in full" ? "green" :
+            status === "paid correct advance" ? "blue" :
+            status === "incorrect pay" ? "red" : "gray";
+
+        } catch (err) {
+          console.error("Update error:", err);
+          alert("❌ Failed to update sheet");
+        }
+      }
+    });
+
+    function rerunCalc(client) {
+      localStorage.setItem("rerunClient", JSON.stringify(client));
+      window.location.href = "/calculator";
+    }
+
+    // Switch month
+    document.getElementById("sheetSelect").addEventListener("change", (e) => {
+      currentSheet = e.target.value;
+      loadClients();
+    });
+
+    window.addEventListener("DOMContentLoaded", loadSheets);
+  </script>
+</body>
+</html>
